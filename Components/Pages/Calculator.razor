@@ -1,0 +1,79 @@
+﻿@page "/calculator"
+@rendermode InteractiveServer
+@using WebApp
+
+<PageTitle>Calculator</PageTitle>
+
+<h1>Calculator</h1>
+
+<section class="container text-center">
+    <div class="border border-danger border-5 bg-light bg-gradient col-6 p-6">
+        <div class="row text-end px-4 pb-4">
+            <br>
+            <br>
+            <h2>@calcOutput</h2>
+            <br>
+            <br>
+            <h2>@calcResult</h2>
+        </div>
+        <div class="row ms-0 me-0 pt-1">
+            <button class="col btn btn-dark" @onclick='() => OnNumberClick("7")'>7</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnNumberClick("8")'>8</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnNumberClick("9")'>9</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnOperatorClick("+")'>+</button>
+        </div>
+        <div class="row ms-0 me-0 pt-1">
+            <button class="col btn btn-dark" @onclick='() => OnNumberClick("4")'>4</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnNumberClick("5")'>5</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnNumberClick("6")'>6</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnOperatorClick("-")'>-</button>
+        </div>
+        <div class="row ms-0 me-0 pt-1">
+            <button class="col btn btn-dark " @onclick='() => OnNumberClick("1")'>1</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnNumberClick("2")'>2</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnNumberClick("3")'>3</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnOperatorClick("*")'>*</button>
+        </div>
+        <div class="row ms-0 me-0 pt-1">
+            <button class="col btn btn-dark">.</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnNumberClick("0")'>0</button>
+            <button class="col btn btn-dark ms-1" @onclick="OnResultClick">=</button>
+            <button class="col btn btn-dark ms-1" @onclick='() => OnOperatorClick("/")'>/</button>
+        </div>
+    </div>
+</section>
+
+@code {
+    private int calcResult = 0;
+    private string calcOutput = "";
+
+    private void OnResultClick()
+    {
+        string[] outputPieces = calcOutput.Split();
+
+        switch (outputPieces[1]) 
+        {
+            case "+":
+                calcResult = Calc.Sum(outputPieces[0], outputPieces[2]);
+                break;
+            case "minus":
+                calcResult = Calc.Minus(outputPieces[0], outputPieces[2]);
+                break;
+            case "*":
+                calcResult = Calc.Mul(outputPieces[0], outputPieces[2]);
+                break;
+            case "/":
+                calcResult = Calc.Div(outputPieces[0], outputPieces[2]);
+                break;
+        }
+    }
+
+    private void OnOperatorClick(string btn)
+    {
+        calcOutput += $" {btn.Trim()} ";
+    }
+
+    private void OnNumberClick(string number) {
+        calcOutput += $"{number.Trim()}";
+    }
+}
