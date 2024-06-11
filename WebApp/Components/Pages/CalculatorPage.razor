@@ -45,33 +45,34 @@
 
     private void OnResultClick()
     {
-        string[] outputPieces = calcOutput.Split();
+        string[] outPieces = calcOutput.Split();
 
-        switch (outputPieces[1]) 
-        {
-            case "+":
-                calcResult = Calc.Sum(outputPieces[0], outputPieces[2]);
-                break;
-            case "minus":
-                calcResult = Calc.Minus(outputPieces[0], outputPieces[2]);
-                break;
-            case "*":
-                calcResult = Calc.Mul(outputPieces[0], outputPieces[2]);
-                break;
-            case "/":
-                calcResult = Calc.Div(outputPieces[0], outputPieces[2]);
-                break;
-        }
-        calcOutput = Convert.ToString(calcResult);
-        calcResult = 0;
+        if (outPieces.Length == 3)
+            calcOutput = Calc.PerformOperation(outPieces[0], outPieces[1], outPieces[2]);
     }
 
     private void OnOperatorClick(string btn)
     {
-        calcOutput += $" {btn.Trim()} ";
+        
+        bool hasOpt = (calcOutput.Contains("*") ||
+                        calcOutput.Contains("+") ||
+                        calcOutput.Contains("-") ||
+                        calcOutput.Contains("/"));
+        if (hasOpt) {
+            string[] outPieces = calcOutput.Split();
+            if (outPieces.Length != 3)
+                return;
+            calcOutput = Calc.PerformOperation(outPieces[0], outPieces[1], outPieces[2]);
+        }
+        calcOutput += $" {btn.Trim()}";
     }
 
     private void OnNumberClick(string number) {
+        bool hasOpt = (calcOutput.EndsWith("*") ||
+                        calcOutput.EndsWith("+") ||
+                        calcOutput.EndsWith("-") ||
+                        calcOutput.EndsWith("/"));
+        if (hasOpt) calcOutput += " ";
         calcOutput += $"{number.Trim()}";
     }
 }

@@ -2,38 +2,54 @@
 
 public class Calc
 {
-    static private bool _parserValues(ref int a, ref int b, string sa, string sb) {
-        if (int.TryParse(sa, out a) && int.TryParse(sb, out b)) {
+    static private bool parserValues(ref decimal a, ref decimal b, string sa, string sb) {
+        if (decimal.TryParse(sa, out a) && decimal.TryParse(sb, out b)) {
             return true;
         }
         return false;
     }
 
-    static public int Sum(string a, string b) {
-        int numA = 0;
-        int numB = 0;
-        _parserValues(ref numA, ref numB, a, b);
-        return numA + numB;
+    static public string PerformOperation(string na, string opt, string nb) {
+        decimal numA = 0;
+        decimal numB = 0;
+        decimal res = 0;
+    
+        if (parserValues(ref numA, ref numB, na, nb)) {
+            switch (opt.Trim()) 
+            {
+                case "+":
+                    res = Calc.Sum(numA, numB);
+                    break;
+                case "-":
+                    res = Calc.Minus(numA, numB);
+                    break;
+                case "*":
+                    res = Calc.Mul(numA, numB);
+                    break;
+                case "/":
+                    res = Calc.Div(numA, numB);
+                    break;
+                default:
+                    return "Error - pattern.";
+            }
+            return Convert.ToString(res);
+        }
+        return "Error - no numeric.";
     }
 
-    static public int Minus(string a, string b) {
-        int numA = 0;
-        int numB = 0;
-        _parserValues(ref numA, ref numB, a, b);
-        return numA - numB;
+    static protected decimal Sum(decimal a, decimal b) {
+        return a + b;
     }
 
-    static public int Div(string a, string b) {
-        int numA = 0;
-        int numB = 0;
-        _parserValues(ref numA, ref numB, a, b);
-        return numA / numB;
+    static protected decimal Minus(decimal a, decimal b) {
+        return a - b;
     }
 
-    static public int Mul(string a, string b) {
-        int numA = 0;
-        int numB = 0;
-        _parserValues(ref numA, ref numB, a, b);
-        return numA * numB;
+    static protected decimal Div(decimal a, decimal b) {
+        return a / b;
+    }
+
+    static protected decimal Mul(decimal a, decimal b) {
+        return a * b;
     }
 };
