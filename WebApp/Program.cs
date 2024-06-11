@@ -1,4 +1,4 @@
-using learn_dotnet.Components;
+using WebApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
